@@ -77,7 +77,7 @@ from pydhcplib.dhcp_network import *
 
 platform = sys.platform
 
-usage = """Usage: bsdpyserver.py [-p <path>] [-r <protocol>] [-i <interface>] [-l <filepath>]
+usage = """Usage: bsdpyserver.py [-p <path>] [-r <protocol>] [-i <interface>] [-l <filepath>] [-u <urlprefix>]
 
 Run the BSDP server and handle requests from client. Optional parameters are
 the root path to serve NBIs from, the protocol to serve them with and the
