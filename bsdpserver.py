@@ -105,6 +105,7 @@ Options:
  -r --proto <protocol>   The protocol to serve NBIs with. [default: http]
  -i --iface <interface>  The interface to bind to. [default: eth0]
  -l --logfile <filepath> The path to log file. [default: /var/log/bsdpserver.log]
+ -u --urlprefix <urlprefix> The prefix, that be used as relative path to http [default: /nbi]
 """
 
 arguments = docopt(usage, version='0.5.0')
@@ -271,7 +272,11 @@ try:
 
         else:
             if 'http' in bootproto:
-                basedmgpath = 'http://' + serverip_str + tftprootpath + '/'
+
+                if arguments['--urlprefix'] != None :
+                    basedmgpath = 'http://' + serverip_str + arguments['--urlprefix'] + '/'
+                else:
+                    basedmgpath = 'http://' + serverip_str + tftprootpath + '/'
                 nbiurl = basedmgpath
                 logging.debug('Using HTTP basedmgpath %s' % basedmgpath)
             if 'nfs' in bootproto:
