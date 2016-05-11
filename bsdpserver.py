@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 ################################################################################
 # Copyright 2015 The Regents of the University of Michigan
 #
@@ -77,7 +77,7 @@ from pydhcplib.dhcp_network import *
 
 platform = sys.platform
 
-usage = """Usage: bsdpyserver.py [-p <path>] [-r <protocol>] [-i <interface>]
+usage = """Usage: bsdpyserver.py [-p <path>] [-r <protocol>] [-i <interface>] [-l <filepath>]
 
 Run the BSDP server and handle requests from client. Optional parameters are
 the root path to serve NBIs from, the protocol to serve them with and the
@@ -104,11 +104,14 @@ Options:
  -p --path <path>        The path to serve NBIs from. [default: /nbi]
  -r --proto <protocol>   The protocol to serve NBIs with. [default: http]
  -i --iface <interface>  The interface to bind to. [default: eth0]
+ -l --logfile <filepath> The path to log file. [default: /var/log/bsdpserver.log]
 """
+
+arguments = docopt(usage, version='0.5.0')
 
 logging.basicConfig(format='%(asctime)s - %(levelname)s: %(message)s',
                     level=logging.DEBUG,
-                    filename='/var/log/bsdpserver.log',
+                    filename=arguments['--logfile'] if arguments['--logfile'] != None else '/var/log/bsdpserver.log' ,
                     datefmt='%m/%d/%Y %I:%M:%S %p')
 
 # Set a number of globals that will be used later on
@@ -195,8 +198,6 @@ if 'BSDPY_API_URL' in dockervars:
     useapiurl = True
 else:
     useapiurl = False
-
-arguments = docopt(usage, version='0.5.0')
 
 # Set the root path that NBIs will be served out of, either provided at
 #  runtime or using a default if none was given. Defaults to /nbi.
